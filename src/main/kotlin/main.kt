@@ -1,6 +1,7 @@
 import com.github.ajalt.mordant.animation.animation
 import com.github.ajalt.mordant.terminal.Terminal
 import com.github.ajalt.mordant.widgets.progressLayout
+import java.lang.management.ManagementFactory
 import java.util.concurrent.TimeUnit
 
 fun main() {
@@ -9,6 +10,7 @@ fun main() {
     val terminal = Terminal()
     println("Console = ${System.console()}")
     println("crClearsLine = ${terminal.info.crClearsLine}")
+    println("inputArguments = ${ManagementFactory.getRuntimeMXBean().inputArguments}")
     println("----------------env---------------------")
     println(System.getenv().entries.joinToString("\n") { (key, value) -> "$key = $value"})
     println("----------------------------------------")
