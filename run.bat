@@ -6,6 +6,8 @@ if "%~1" == "-e" (GOTO CLEAN_VARS) else (GOTO RUN)
 
 :CLEAN_VARS
 echo "Some cleanup"
+if not "%IDEA_INITIAL_DIRECTORY%" == "" set "MY_IDEA_TERMINAL=true"
+if "%MY_IDEA_TERMINAL%" == "true" set "COLORTERM=truecolor"
 set "IDEA_INITIAL_DIRECTORY="
 set "__INTELLIJ_COMMAND_HISTFILE__="
 set "TERMINAL_EMULATOR="

@@ -3,7 +3,6 @@ import com.github.ajalt.mordant.table.table
 import com.github.ajalt.mordant.terminal.Terminal
 import com.github.ajalt.mordant.widgets.progressLayout
 import java.lang.management.ManagementFactory
-import java.nio.file.StandardOpenOption
 import java.util.concurrent.TimeUnit
 import kotlin.io.path.Path
 import kotlin.io.path.createDirectories
@@ -12,11 +11,7 @@ import kotlin.io.path.writeText
 fun main() {
     println("wait for debug")
     Thread.sleep(TimeUnit.SECONDS.toMillis(5))
-    val terminal = Terminal(
-//        interactive = System.console() != null &&
-//                (!System.getenv("WT_SESSION").isNullOrEmpty() ||
-//                "windows" !in System.getProperty("os.name")?.lowercase().orEmpty())
-    )
+    val terminal = createTerminal()
     val myTable = table {
         header {
             row {
@@ -102,4 +97,20 @@ fun main() {
     Thread.sleep(1000)
 
     progress.clear()
+}
+
+private val isCurrentWindowsEnvInteractive: Boolean
+    get() =
+        System.getenv("WT_SESSION") != null ||
+                System.getenv("MY_IDEA_TERMINAL") == "true"
+
+private val isWindows: Boolean
+    get() = "windows" in System.getProperty("os.name")?.lowercase().orEmpty()
+
+private fun createTerminal(): Terminal {
+    val tmpTerminal = Terminal()
+    if (!tmpTerminal.info.interactive || !isWindows || isCurrentWindowsEnvInteractive) {
+        return tmpTerminal
+    }
+    return Terminal(interactive = false)
 }
